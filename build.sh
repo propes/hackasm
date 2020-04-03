@@ -14,4 +14,7 @@ gcc -o runner \
     hackAssemblerLib.o \
     hackAssemblerLibTests.o \
     runner.o
+gcc -o hackAsm \
+    hackAssemblerLib.o \
+    main.o
 rm *.o
