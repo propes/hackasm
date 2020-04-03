@@ -5,6 +5,11 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
+typedef struct {
+    char *name;
+    int value;
+} SYMBOL;
+
 size_t getFileSize(char *filename) {
     // https://wiki.sei.cmu.edu/confluence/display/c/FIO19-C.+Do+not+use+fseek()+and+ftell()+to+compute+the+size+of+a+regular+file
 
@@ -33,10 +38,10 @@ void openFileIntoString(char *filename, char *str) {
     fclose(fptr);
 }
 
-void writeStringToFile(char *filename, char * out) {
+void writeStringToFile(char *filename, char *out) {
 }
 
-void stripWhiteSpace(char * str, char * out) {
+void stripWhiteSpace(char *str, char *out) {
     int j = 0;
     for (int i = 0; i < strlen(str); i++) {
         out[j] = str[i];
@@ -45,13 +50,13 @@ void stripWhiteSpace(char * str, char * out) {
     out[j] = '\0';
 }
 
-char * stripComments(char * str) {
+char * stripComments(char *str) {
 }
 
-char * addLabelsToSymbolTable(char * str, char * symbols[][2]) {
+char * addLabelsToSymbolTable(char *str, char *symbols[][2]) {
 }
 
-char ** parseAssemblyString(char * str, char * symbols[][2]) {
+char ** parseAssemblyString(char *str, char *symbols[][2]) {
     char nowhitespace[strlen(str)];
     stripWhiteSpace(str, nowhitespace);
     str = stripComments(str);
@@ -64,11 +69,11 @@ char ** parseAssemblyString(char * str, char * symbols[][2]) {
         // Translate instruction to machine language
 }
 
-char * concatenateArray(char * instructions[]) {
+void convertAssemblyToMachineCode(char *str, char *out, SYMBOL *symbols) {
+    // Read each character until next line break
+    // and copy each character into a buffer string.
+
+    // Parse the assembly string
 }
 
-char * convertAssemblyToMachineCode(char * str, char * out, char * symbols[][2]) {
-    char ** instructions = parseAssemblyString(str, symbols);
-
-    return concatenateArray(instructions);
-}
+void getPredefinedSymbolsFromFile(char *filename, SYMBOL *symbols);

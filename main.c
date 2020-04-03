@@ -1,18 +1,16 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "hackAssemblerLib.h"
 
 int main(int argc, char *argv[]) {
 
-    char filename[] = argv[0];
+    char *filename = argv[0];
 
-    char * symbols[64][2] = {
-        { "R0", "0" },
-        { "R1", "1" },
-        { "R2", "2" },
-    };
+    SYMBOL symbols[128];
+    getPredefinedSymbolsFromFile("symbols.csv", symbols);
 
     size_t fs = getFileSize(filename);
-    char* fileString[fs];
+    char fileString[fs];
 
     openFileIntoString(filename, fileString);
 

@@ -8,6 +8,7 @@ gcc -c -g lib/test.c
 gcc -c -g hackAssemblerLib.c
 gcc -c -g tests/hackAssemblerLibTests.c
 gcc -c -g runner.c
+gcc -c -g main.c
 gcc -o runner \
     test.o \
     hackAssemblerLib.o \
