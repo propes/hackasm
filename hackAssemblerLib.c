@@ -29,7 +29,7 @@ size_t getFileSize(char *filename) {
     return stbuf.st_size;
 }
 
-void openFileIntoString(char *filename, char *str) {
+void readFileIntoString(char *filename, char *str) {
     FILE *fptr;
     fptr = fopen(filename, "r");
 
@@ -77,5 +77,5 @@ void convertAssemblyToMachineCode(char *str, char *out, SYMBOL *symbols) {
 }
 
 void getPredefinedSymbolsFromFile(char *filename, SYMBOL *symbols) {
-    
+
 }

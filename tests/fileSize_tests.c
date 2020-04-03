@@ -3,7 +3,7 @@
 #include "../lib/test.h"
 #include "../hackAssemblerLib.h"
 
-void createTestFile(char *filename, char *data) {
+static void createTestFile(char *filename, char *data) {
     FILE *fptr;
     fptr = fopen(filename, "w");
     fprintf(fptr, "%s", data);
@@ -69,59 +69,4 @@ int fileSize_Given1024ByteFile_Returns1024() {
     remove(filename);
 
     return isFail;
-}
-
-int openFileIntoString_GivenEmptyFile_LeavesStringEmpty() {
-    char *filename = "test.txt";
-    createTestFile(filename, "");
-    char str[0];
-
-    openFileIntoString(filename, str);
-
-    int isFail = assertStringEqual("", str, "openFileIntoString()");
-
-    remove(filename);
-
-    return isFail;
-}
-
-int openFileIntoString_PopulatesString() {
-    char *filename = "test.txt";
-    createTestFile(filename, "abcd123");
-    char str[10];
-
-    openFileIntoString(filename, str);
-
-    int isFail = assertStringEqual("abcd123", str, "openFileIntoString()");
-
-    remove(filename);
-
-    return isFail;
-}
-
-int stripWhiteSpace_GivenValues() {
-    char *testData[][3] = {
-        { "", "", "stripWhitespace()" },
-        { " ", "", "stripWhitespace( )" },
-        { "  ", "", "stripWhitespace( )" },
-        { "\t", "", "stripWhitespace(tab)" },
-        { "a", "a", "stripWhitespace(a)" },
-        { "aa", "aa", "stripWhitespace(a)" }
-    };
-
-    int failCount = 0;
-    int testCount = sizeof(testData) / sizeof(testData[0]);
-
-    for (int i = 0; i < testCount; i++) {
-        char *value = testData[i][0];
-        char *expected = testData[i][1];
-        char *testName = testData[i][2];
-
-        char result[strlen(value)];
-        stripWhiteSpace(value, result);
-
-        failCount += assertStringEqual(expected, result, testName);
-    }
-
-    return failCount;
 }

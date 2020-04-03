@@ -12,7 +12,7 @@ int main(int argc, char *argv[]) {
     size_t fs = getFileSize(filename);
     char fileString[fs];
 
-    openFileIntoString(filename, fileString);
+    readFileIntoString(filename, fileString);
 
     char *outString = (char *) malloc(fs * sizeof(char));
 

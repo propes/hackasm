@@ -1,7 +1,7 @@
 #include "types.h"
 
 extern size_t getFileSize(char *filename);
-extern char* openFileIntoString(char *filename, char *str);
+extern char* readFileIntoString(char *filename, char *str);
 extern void writeStringToFile(char *filename, char *out);
 extern void stripWhiteSpace(char *str, char *out);
 extern char* stripComments(char *str);

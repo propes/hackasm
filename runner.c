@@ -1,5 +1,7 @@
 #include <stdio.h>
-#include "tests/hackAssemblerLibTests.h"
+#include "tests/fileSize_tests.h"
+#include "tests/readFileIntoString_tests.h"
+#include "tests/stripWhiteSpace_tests.h"
 
 int main() {
     int failCount =
@@ -7,8 +9,8 @@ int main() {
         fileSize_GivenOneByteFile_ReturnsOne() +
         fileSize_Given4ByteFile_Returns4() +
         fileSize_Given1024ByteFile_Returns1024() +
-        openFileIntoString_GivenEmptyFile_LeavesStringEmpty() +
-        openFileIntoString_PopulatesString();
+        readFileIntoString_GivenEmptyFile_LeavesStringEmpty() +
+        readFileIntoString_PopulatesString();
 
     if (failCount == 0) {
         printf("All tested passed.\n");
