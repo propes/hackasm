@@ -1,10 +1,39 @@
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
-char * openFileIntoString(char * filename) {
+size_t getFileSize(char *filename) {
+    // https://wiki.sei.cmu.edu/confluence/display/c/FIO19-C.+Do+not+use+fseek()+and+ftell()+to+compute+the+size+of+a+regular+file
+
+    char *buffer;
+    struct stat stbuf;
+    int fd;
+    
+    fd = open(filename, O_RDONLY);
+    if (fd == -1) {
+        /* Handle error */
+    }
+    
+    if ((fstat(fd, &stbuf) != 0) || (!S_ISREG(stbuf.st_mode))) {
+        /* Handle error */
+    }
+    
+    return stbuf.st_size;
 }
 
-void writeStringToFile(char * out) {
+void openFileIntoString(char *filename, char *str) {
+    FILE *fptr;
+    fptr = fopen(filename, "r");
+
+    fscanf(fptr,"%s", str);
+
+    fclose(fptr);
+}
+
+void writeStringToFile(char *filename, char * out) {
 }
 
 void stripWhiteSpace(char * str, char * out) {
@@ -38,7 +67,7 @@ char ** parseAssemblyString(char * str, char * symbols[][2]) {
 char * concatenateArray(char * instructions[]) {
 }
 
-char * convertAssemblyToMachine(char * str, char * out, char * symbols[][2]) {
+char * convertAssemblyToMachineCode(char * str, char * out, char * symbols[][2]) {
     char ** instructions = parseAssemblyString(str, symbols);
 
     return concatenateArray(instructions);
