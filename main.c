@@ -7,7 +7,7 @@ int main(int argc, char *argv[]) {
     char *filename = argv[0];
 
     SYMBOL symbols[128];
-    getPredefinedSymbolsFromFile("symbols.csv", symbols);
+    readSymbolsFromFile("symbols.csv", symbols);
 
     size_t fs = getFileSize(filename);
     char fileString[fs];

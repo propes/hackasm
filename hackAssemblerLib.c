@@ -76,6 +76,6 @@ void convertAssemblyToMachineCode(char *str, char *out, SYMBOL *symbols) {
     // Parse the assembly string
 }
 
-void getPredefinedSymbolsFromFile(char *filename, SYMBOL *symbols) {
+void readSymbolsFromFile(char *filename, SYMBOL *symbols) {
 
 }
