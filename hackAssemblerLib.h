@@ -1,7 +1,4 @@
-typedef struct {
-    char *name;
-    int value;
-} SYMBOL;
+#include "types.h"
 
 extern size_t getFileSize(char *filename);
 extern char* openFileIntoString(char *filename, char *str);
