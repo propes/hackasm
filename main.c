@@ -12,6 +12,7 @@ int main(int argc, char *argv[]) {
     size_t fs = getFileSize(filename);
     char fileString[fs];
 
+    // TODO: this needs to change. Can only read one line at a time.
     readFileIntoString(filename, fileString);
 
     char *outString = (char *) malloc(fs * sizeof(char));
@@ -21,6 +22,4 @@ int main(int argc, char *argv[]) {
     writeStringToFile("out.hack", outString);
 
     free(outString);
-
-    return 0;
 }

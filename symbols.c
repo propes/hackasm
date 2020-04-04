@@ -4,7 +4,6 @@
 
 void addSymbol(SYMBOL_TABLE *table, SYMBOL symbol) {
     int i = table->count;
-    strcpy(table->symbols[i].name, symbol.name);
-    strcpy(table->symbols[i].value, symbol.value);
+    table->symbols[i] = symbol;
     table->count++;
 }
