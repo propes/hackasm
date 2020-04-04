@@ -1,4 +1,4 @@
 typedef struct {
-    char *name;
-    int value;
+    char name[50];
+    char value[50];
 } SYMBOL;

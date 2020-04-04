@@ -12,9 +12,7 @@ static void createTestFile(char *filename, char *data) {
 int readSymbolsFromFile_GivenFileDoesNotExist_ReturnErrorCode() {
     int err = readSymbolsFromFile("imaginary.csv", NULL);
 
-    int fail = assertIntEqual(-1, err, "readSymbolsFromFile - no file");
-
-    return fail;
+    return assertIntEqual(-1, err, "readSymbolsFromFile - no file");
 }
 
 int readSymbolsFromFile_GivenEmptyFile_ReturnErrorCode() {
@@ -36,7 +34,8 @@ int readSymbolsFromFile_GivenInvalidFile_ReturnErrorCode() {
         "a",
         ",",
         "a,",
-        ",1"
+        ",1",
+        "a,a"
     };
     
     int testCount = sizeof(testData) / sizeof(testData[0]);

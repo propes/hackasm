@@ -4,11 +4,8 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-
-typedef struct {
-    char *name;
-    int value;
-} SYMBOL;
+#include <regex.h>
+#include "types.h"
 
 size_t getFileSize(char *filename) {
     // https://wiki.sei.cmu.edu/confluence/display/c/FIO19-C.+Do+not+use+fseek()+and+ftell()+to+compute+the+size+of+a+regular+file
@@ -87,14 +84,53 @@ int indexOfNextChar(char *str, char c, size_t len, int startIndex) {
     return -1;
 }
 
-int readLineIntoSymbol(char *str, size_t len, int startIndex, SYMBOL *symbol) {
+int matchRegex(const char *string, char *pattern)
+{
+    int status;
+    regex_t regex;
+
+    if (regcomp(&regex, pattern, REG_EXTENDED|REG_NOSUB) != 0) {
+        return 0;
+    }
+
+    status = regexec(&regex, string, (size_t) 0, NULL, 0);
+    regfree(&regex);
+    if (status != 0) {
+        return 0;
+    }
+
+    return 1;
+}
+
+int readLineIntoSymbol(char *str, size_t len, int startIndex, SYMBOL *symbol, int *err) {
     int i = indexOfNextChar(str, ',', len, startIndex);
     int j = indexOfNextChar(str, '\n', len, startIndex);
 
-    if (i == -1 || i > j) {
-        printf("Invalid symbol file: at least one line does not contain two columns\n");
+    // Check line is properly formed.
+    // Line must contain exactly two fields.
+    int endIndex = j < 0 ? len - 1 : j;
+    if (i <= 0 || i >= endIndex) {
+        printf("Invalid symbol file: at least one line does not contain two fields.\n");
+        *err = -1;
+
         return -1;
     }
+
+    // TODO: handle strings longer than field buffers.
+    char field1[50];
+    char field2[50];
+    strncpy(field2, &str[startIndex], i - startIndex);
+    strncpy(symbol->value, &str[i+1], endIndex);
+
+    // Second field must contain only digits.
+    if (matchRegex(field2, "^[0-9]+$") == 0) {
+        printf("Invalid symbol file: second field must only contain numbers.\n");
+        *err = -1;
+
+        return -1;
+    }
+
+    // Copy fields into symbol.
 
     return j;
 }
@@ -102,7 +138,7 @@ int readLineIntoSymbol(char *str, size_t len, int startIndex, SYMBOL *symbol) {
 int readSymbolsFromFile(char *filename, SYMBOL *symbols) {
     FILE *fptr;
     if ((fptr = fopen(filename, "r")) == NULL) {
-        printf("Error opening file: %s\n", filename);
+        printf("Error opening file: '%s'.\n", filename);
         return -1;
     }
 
@@ -111,20 +147,19 @@ int readSymbolsFromFile(char *filename, SYMBOL *symbols) {
 
     // If the file is empty throw an error
     if (str[0] == '\0') {
-        printf("Invalid symbol file: file is empty\n");
+        printf("Invalid symbol file: file is empty.\n");
         return -1;
     }
 
-    // Check that the file is properly formed.
-    // The file must contain at least one line
     int i = 0;
     int len = strlen(str);
-    while (i < len) {
-        SYMBOL *symbol;
-        i = readLineIntoSymbol(str, len, i, symbol);
+    while (i >= 0) {
+        SYMBOL symbol;
+        int err;
+        i = readLineIntoSymbol(str, len, i, &symbol, &err);
 
         // Handle error
-        if (i < 0) {
+        if (err < 0) {
             return -1;
         }
     }

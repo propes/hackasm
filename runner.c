@@ -3,6 +3,7 @@
 #include "tests/readFileIntoString_tests.h"
 #include "tests/stripWhiteSpace_tests.h"
 #include "tests/readSymbolsFromFile_tests.h"
+#include "tests/matchRegex_tests.h"
 
 int main() {
     int failCount =
@@ -14,7 +15,9 @@ int main() {
         readFileIntoString_PopulatesString() +
         readSymbolsFromFile_GivenFileDoesNotExist_ReturnErrorCode() +
         readSymbolsFromFile_GivenEmptyFile_ReturnErrorCode() +
-        readSymbolsFromFile_GivenInvalidFile_ReturnErrorCode();
+        readSymbolsFromFile_GivenInvalidFile_ReturnErrorCode() +
+        matchRegex_GivenNoMatch_ReturnsFalse() +
+        matchRegex_GivenMatch_ReturnsTrue();
 
     if (failCount == 0) {
         printf("All tested passed.\n");
