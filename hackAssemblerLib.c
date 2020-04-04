@@ -5,7 +5,9 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <regex.h>
-#include "types.h"
+#include "symbols.h"
+
+//#define MESSAGES_ON
 
 size_t getFileSize(char *filename) {
     // https://wiki.sei.cmu.edu/confluence/display/c/FIO19-C.+Do+not+use+fseek()+and+ftell()+to+compute+the+size+of+a+regular+file
@@ -38,11 +40,13 @@ void readFileIntoString(char *filename, char *str) {
 void writeStringToFile(char *filename, char *out) {
 }
 
-void stripWhiteSpace(char *str, char *out) {
+void trimWhiteSpace(char *str, char *out) {
     int j = 0;
     for (int i = 0; i < strlen(str); i++) {
-        out[j] = str[i];
-        j++;
+        if (str[i] != ' ' && str[i] != '\t') {
+            out[j] = str[i];
+            j++;
+        }
     }
     out[j] = '\0';
 }
@@ -55,7 +59,7 @@ char * addLabelsToSymbolTable(char *str, char *symbols[][2]) {
 
 char ** parseAssemblyString(char *str, char *symbols[][2]) {
     char nowhitespace[strlen(str)];
-    stripWhiteSpace(str, nowhitespace);
+    trimWhiteSpace(str, nowhitespace);
     str = stripComments(str);
 
     addLabelsToSymbolTable(str, symbols);
@@ -66,7 +70,7 @@ char ** parseAssemblyString(char *str, char *symbols[][2]) {
         // Translate instruction to machine language
 }
 
-void convertAssemblyToMachineCode(char *str, char *out, SYMBOL *symbols) {
+void convertAssemblyToMachineCode(char *str, char *out, SYMBOL_TABLE *table) {
     // Read each character until next line break
     // and copy each character into a buffer string.
 
@@ -102,66 +106,71 @@ int matchRegex(const char *string, char *pattern)
     return 1;
 }
 
-int readLineIntoSymbol(char *str, size_t len, int startIndex, SYMBOL *symbol, int *err) {
-    int i = indexOfNextChar(str, ',', len, startIndex);
-    int j = indexOfNextChar(str, '\n', len, startIndex);
+int readLineIntoSymbol(char *str, SYMBOL *symbol) {
+    size_t len = strlen(str);
+    if (str[len - 1] == '\n') {
+        len = len - 1;
+    }
+    int i = indexOfNextChar(str, ',', len, 0);
 
     // Check line is properly formed.
     // Line must contain exactly two fields.
-    int endIndex = j < 0 ? len - 1 : j;
-    if (i <= 0 || i >= endIndex) {
-        printf("Invalid symbol file: at least one line does not contain two fields.\n");
-        *err = -1;
-
+    if (i <= 0 || i == len - 1) {
+        #ifdef MESSAGES_ON
+            printf("Invalid symbol file: at least one line does not contain two fields.\n");
+        #endif
         return -1;
     }
 
     // TODO: handle strings longer than field buffers.
-    char field1[50];
-    char field2[50];
-    strncpy(field2, &str[startIndex], i - startIndex);
-    strncpy(symbol->value, &str[i+1], endIndex);
+    char field1[50] = "";
+    char field2[50] = "";
+    strncpy(field1, str, i);
+    strncpy(field2, &str[i + 1], len - i - 1);
+
+    // Remove whitespace.
+    char field1w[50];
+    char field2w[50];
+    trimWhiteSpace(field1, field1w);
+    trimWhiteSpace(field2, field2w);
 
     // Second field must contain only digits.
-    if (matchRegex(field2, "^[0-9]+$") == 0) {
-        printf("Invalid symbol file: second field must only contain numbers.\n");
-        *err = -1;
-
+    if (matchRegex(field2w, "^[0-9]+$") == 0) {
+        #ifdef MESSAGES_ON
+            printf("Invalid symbol file: second field must only contain numbers.\n");
+        #endif
         return -1;
     }
 
     // Copy fields into symbol.
+    strcpy(symbol->name, field1w);
+    strcpy(symbol->value, field2w);
 
-    return j;
+    return 0;
 }
 
-int readSymbolsFromFile(char *filename, SYMBOL *symbols) {
+int readSymbolsFromFile(char *filename, SYMBOL_TABLE *table) {
     FILE *fptr;
     if ((fptr = fopen(filename, "r")) == NULL) {
-        printf("Error opening file: '%s'.\n", filename);
+        #ifdef MESSAGES_ON
+            printf("Error opening file: '%s'.\n", filename);
+        #endif
         return -1;
     }
 
-    char str[128] = "";
-    fscanf(fptr, "%s", str);
+    int fileSize = getFileSize(filename);
+    char str[fileSize];
 
-    // If the file is empty throw an error
-    if (str[0] == '\0') {
-        printf("Invalid symbol file: file is empty.\n");
-        return -1;
-    }
-
-    int i = 0;
-    int len = strlen(str);
-    while (i >= 0) {
+    while (fgets(str, fileSize + 1, fptr) != NULL) {
         SYMBOL symbol;
-        int err;
-        i = readLineIntoSymbol(str, len, i, &symbol, &err);
+        int err = readLineIntoSymbol(str, &symbol);
 
         // Handle error
         if (err < 0) {
             return -1;
         }
+
+        addSymbol(table, symbol);
     }
 
     fclose(fptr);

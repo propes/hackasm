@@ -6,8 +6,8 @@ int main(int argc, char *argv[]) {
 
     char *filename = argv[0];
 
-    SYMBOL symbols[128];
-    readSymbolsFromFile("symbols.csv", symbols);
+    SYMBOL_TABLE table;
+    readSymbolsFromFile("symbols.csv", &table);
 
     size_t fs = getFileSize(filename);
     char fileString[fs];
@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
 
     char *outString = (char *) malloc(fs * sizeof(char));
 
-    convertAssemblyToMachineCode(fileString, outString, symbols);
+    convertAssemblyToMachineCode(fileString, outString, &table);
 
     writeStringToFile("out.hack", outString);
 

@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include "tests/fileSize_tests.h"
 #include "tests/readFileIntoString_tests.h"
-#include "tests/stripWhiteSpace_tests.h"
+#include "tests/trimWhiteSpace_tests.h"
 #include "tests/readSymbolsFromFile_tests.h"
 #include "tests/matchRegex_tests.h"
+#include "tests/addSymbol_tests.h"
 
 int main() {
     int failCount =
@@ -13,11 +14,18 @@ int main() {
         fileSize_Given1024ByteFile_Returns1024() +
         readFileIntoString_GivenEmptyFile_LeavesStringEmpty() +
         readFileIntoString_PopulatesString() +
+        matchRegex_GivenNoMatch_ReturnsFalse() +
+        matchRegex_GivenMatch_ReturnsTrue() +
+        trimWhiteSpace_GivenValues() +
         readSymbolsFromFile_GivenFileDoesNotExist_ReturnErrorCode() +
         readSymbolsFromFile_GivenEmptyFile_ReturnErrorCode() +
         readSymbolsFromFile_GivenInvalidFile_ReturnErrorCode() +
-        matchRegex_GivenNoMatch_ReturnsFalse() +
-        matchRegex_GivenMatch_ReturnsTrue();
+        readSymbolsFromFile_GivenValidFile_ReturnSuccessCode() +
+        readSymbolsFromFile_GivenSingleRecord_CreatesSymbol() +
+        readSymbolsFromFile_GivenTwoRecords_CreatesSymbols() +
+        readSymbolsFromFile_GivenThreeRecords_CreatesSymbols() +
+        addSymbol_GivenSymbols_UpdatesArray() +
+        addSymbol_GivenSymbol_UpdatesCount();
 
     if (failCount == 0) {
         printf("All tested passed.\n");
