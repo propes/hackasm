@@ -1,0 +1,3 @@
+extern int readSymbolsFromFile_GivenFileDoesNotExist_ReturnErrorCode();
+extern int readSymbolsFromFile_GivenEmptyFile_ReturnErrorCode();
+extern int readSymbolsFromFile_GivenInvalidFile_ReturnErrorCode();

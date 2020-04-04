@@ -8,4 +8,4 @@ extern char* stripComments(char *str);
 extern char* addLabelsToSymbolTable(char *str, char *symbols[][2]);
 extern char* parseAssemblyString(char *str, char *symbols[][2]);
 extern void convertAssemblyToMachineCode(char *str, char *out, SYMBOL *symbols);
-extern void readSymbolsFromFile(char *filename, SYMBOL *symbols);
+extern int readSymbolsFromFile(char *filename, SYMBOL *symbols);

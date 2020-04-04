@@ -76,6 +76,60 @@ void convertAssemblyToMachineCode(char *str, char *out, SYMBOL *symbols) {
     // Parse the assembly string
 }
 
-void readSymbolsFromFile(char *filename, SYMBOL *symbols) {
+int indexOfNextChar(char *str, char c, size_t len, int startIndex) {
+    int i;
+    for (i = startIndex; i < len; i++) {
+        if (str[i] == c) {
+            return i;
+        }
+    }
 
+    return -1;
+}
+
+int readLineIntoSymbol(char *str, size_t len, int startIndex, SYMBOL *symbol) {
+    int i = indexOfNextChar(str, ',', len, startIndex);
+    int j = indexOfNextChar(str, '\n', len, startIndex);
+
+    if (i == -1 || i > j) {
+        printf("Invalid symbol file: at least one line does not contain two columns\n");
+        return -1;
+    }
+
+    return j;
+}
+
+int readSymbolsFromFile(char *filename, SYMBOL *symbols) {
+    FILE *fptr;
+    if ((fptr = fopen(filename, "r")) == NULL) {
+        printf("Error opening file: %s\n", filename);
+        return -1;
+    }
+
+    char str[128] = "";
+    fscanf(fptr, "%s", str);
+
+    // If the file is empty throw an error
+    if (str[0] == '\0') {
+        printf("Invalid symbol file: file is empty\n");
+        return -1;
+    }
+
+    // Check that the file is properly formed.
+    // The file must contain at least one line
+    int i = 0;
+    int len = strlen(str);
+    while (i < len) {
+        SYMBOL *symbol;
+        i = readLineIntoSymbol(str, len, i, symbol);
+
+        // Handle error
+        if (i < 0) {
+            return -1;
+        }
+    }
+
+    fclose(fptr);
+
+    return 0;
 }
