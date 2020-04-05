@@ -54,22 +54,6 @@ void stripWhiteSpace(char *str, char *out) {
 void stripComments(char *str, char *out) {
 }
 
-char * addLabelsToSymbolTable(char *str, char *symbols[][2]) {
-}
-
-char ** parseAssemblyString(char *str, char *symbols[][2]) {
-    // char nowhitespace[strlen(str)];
-    // stripWhiteSpace(str, nowhitespace);
-    // str = stripComments(str);
-
-    // addLabelsToSymbolTable(str, symbols);
-
-    // Second pass: go through the array
-        // Add variables to the symbol table
-        // Replace symbols with values
-        // Translate instruction to machine language
-}
-
 void convertAssemblyToMachineCode(char *str, char *out, SYMBOL_TABLE *table) {
     // Read each character until next line break
     // and copy each character into a buffer string.
