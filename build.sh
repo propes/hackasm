@@ -9,7 +9,7 @@ gcc -c -g hackAssemblerLib.c
 gcc -c -g symbols.c
 gcc -c -g tests/fileSize_tests.c
 gcc -c -g tests/readFileIntoString_tests.c
-gcc -c -g tests/trimWhiteSpace_tests.c
+gcc -c -g tests/stripWhiteSpace_tests.c
 gcc -c -g tests/readSymbolsFromFile_tests.c
 gcc -c -g tests/matchRegex_tests.c
 gcc -c -g tests/addSymbol_tests.c
@@ -22,7 +22,7 @@ gcc -o runner \
     symbols.o \
     fileSize_tests.o \
     readFileIntoString_tests.o \
-    trimWhiteSpace_tests.o \
+    stripWhiteSpace_tests.o \
     readSymbolsFromFile_tests.o \
     matchRegex_tests.o \
     addSymbol_tests.o \

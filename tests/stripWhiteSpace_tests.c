@@ -3,17 +3,17 @@
 #include "../lib/test.h"
 #include "../hackAssemblerLib.h"
 
-int trimWhiteSpace_GivenValues() {
+int stripWhiteSpace_GivenValues() {
     char *testData[][3] = {
-        { "", "", "trimWhiteSpace()" },
-        { " ", "", "trimWhiteSpace( )" },
-        { "  ", "", "trimWhiteSpace( )" },
-        { "\t", "", "trimWhiteSpace(tab)" },
-        { "a", "a", "trimWhiteSpace(a)" },
-        { "aa", "aa", "trimWhiteSpace(aa)" },
-        { " aa", "aa", "trimWhiteSpace( aa)" },
-        { "aa ", "aa", "trimWhiteSpace(aa )" },
-        { " aa ", "aa", "trimWhiteSpace( aa )" },
+        { "", "", "stripWhiteSpace()" },
+        { " ", "", "stripWhiteSpace( )" },
+        { "  ", "", "stripWhiteSpace( )" },
+        { "\t", "", "stripWhiteSpace(tab)" },
+        { "a", "a", "stripWhiteSpace(a)" },
+        { "aa", "aa", "stripWhiteSpace(aa)" },
+        { " aa", "aa", "stripWhiteSpace( aa)" },
+        { "aa ", "aa", "stripWhiteSpace(aa )" },
+        { " aa ", "aa", "stripWhiteSpace( aa )" },
     };
 
     int failCount = 0;
@@ -25,7 +25,7 @@ int trimWhiteSpace_GivenValues() {
         char *testName = testData[i][2];
 
         char result[strlen(value)];
-        trimWhiteSpace(value, result);
+        stripWhiteSpace(value, result);
 
         failCount += assertStringEqual(expected, result, testName);
     }

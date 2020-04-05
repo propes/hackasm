@@ -40,7 +40,7 @@ void readFileIntoString(char *filename, char *str) {
 void writeStringToFile(char *filename, char *out) {
 }
 
-void trimWhiteSpace(char *str, char *out) {
+void stripWhiteSpace(char *str, char *out) {
     int j = 0;
     for (int i = 0; i < strlen(str); i++) {
         if (str[i] != ' ' && str[i] != '\t') {
@@ -51,18 +51,18 @@ void trimWhiteSpace(char *str, char *out) {
     out[j] = '\0';
 }
 
-char * stripComments(char *str) {
+void stripComments(char *str, char *out) {
 }
 
 char * addLabelsToSymbolTable(char *str, char *symbols[][2]) {
 }
 
 char ** parseAssemblyString(char *str, char *symbols[][2]) {
-    char nowhitespace[strlen(str)];
-    trimWhiteSpace(str, nowhitespace);
-    str = stripComments(str);
+    // char nowhitespace[strlen(str)];
+    // stripWhiteSpace(str, nowhitespace);
+    // str = stripComments(str);
 
-    addLabelsToSymbolTable(str, symbols);
+    // addLabelsToSymbolTable(str, symbols);
 
     // Second pass: go through the array
         // Add variables to the symbol table
@@ -131,8 +131,8 @@ int readLineIntoSymbol(char *str, SYMBOL *symbol) {
     // Remove whitespace.
     char field1w[50];
     char field2w[50];
-    trimWhiteSpace(field1, field1w);
-    trimWhiteSpace(field2, field2w);
+    stripWhiteSpace(field1, field1w);
+    stripWhiteSpace(field2, field2w);
 
     // Second field must contain only digits.
     if (matchRegex(field2w, "^[0-9]+$") == 0) {
