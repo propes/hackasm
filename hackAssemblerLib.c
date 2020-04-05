@@ -39,10 +39,31 @@ void stripWhiteSpace(char *str, char *out) {
             j++;
         }
     }
-    out[j] = '\0';
+    for (; j < sizeof(out); j++) {
+        out[j] = '\0';
+    }
 }
 
 void stripComments(char *str, char *out) {
+    int j = 0;
+    int copy = 1;
+    int len = strlen(str);
+    for (int i = 0; i < strlen(str); i++) {
+        if (str[i] == '\\') {
+            copy = 0;
+        }
+        else if (str[i] == '\n') {
+            copy = 1;
+        }
+
+        if (copy > 0) {
+            out[j] = str[i];
+            j++;
+        }
+    }
+    for (; j < sizeof(out); j++) {
+        out[j] = '\0';
+    }
 }
 
 int indexOfNextChar(char *str, char c, size_t len, int startIndex) {
@@ -146,6 +167,52 @@ int readSymbolsFromFile(char *filename, SYMBOL_TABLE *table) {
     return 0;
 }
 
-void parseAssemblyFile(char *filename, char *outString, SYMBOL_TABLE *table) {
-    
+int preprocessAssemblyLine(char *str, char *out, int *line, SYMBOL_TABLE *table) {
+    size_t len = strlen(str);
+    char noComments[len];
+    char clean[len];
+    stripComments(str, noComments);
+    stripWhiteSpace(noComments, clean);
+
+    // If line is blank for newline
+        // return
+
+    // If contains label
+        // Add label to symbol table
+        // return
+
+    strcat(out, clean);
+
+    line++;
+
+    return 0;
+}
+
+int parseAssemblyFile(char *filename, char *outString, SYMBOL_TABLE *table) {
+    FILE *fptr;
+    if ((fptr = fopen(filename, "r")) == NULL) {
+        #ifdef MESSAGES_ON
+            printf("Error opening file: '%s'.\n", filename);
+        #endif
+        return -1;
+    }
+
+    char str[100];
+    int fileSize = getFileSize(filename);
+    char buffer[fileSize];
+
+    // First pass
+    int line = 1;
+    while (fgets(str, 100, fptr) != NULL) {
+        preprocessAssemblyLine(str, buffer, &line, table);
+    }
+
+    // Second pass
+    rewind(fptr);
+    while (fgets(str, 100, fptr) != NULL) {
+    }
+
+    fclose(fptr);
+
+    return 0;
 }

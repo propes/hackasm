@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "tests/fileSize_tests.h"
 #include "tests/stripWhiteSpace_tests.h"
+#include "tests/stripComments_tests.h"
 #include "tests/readSymbolsFromFile_tests.h"
 #include "tests/matchRegex_tests.h"
 #include "tests/addSymbol_tests.h"
@@ -14,6 +15,7 @@ int main() {
         matchRegex_GivenNoMatch_ReturnsFalse() +
         matchRegex_GivenMatch_ReturnsTrue() +
         stripWhiteSpace_GivenValues() +
+        stripComments_GivenValues() +
         readSymbolsFromFile_GivenFileDoesNotExist_ReturnErrorCode() +
         readSymbolsFromFile_GivenEmptyFile_ReturnErrorCode() +
         readSymbolsFromFile_GivenInvalidFile_ReturnErrorCode() +

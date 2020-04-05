@@ -6,4 +6,4 @@ extern void stripWhiteSpace(char *str, char *out);
 extern void stripComments(char *str, char *out);
 extern int readSymbolsFromFile(char *filename, SYMBOL_TABLE *table);
 extern int matchRegex(const char *string, char *pattern);
-extern void parseAssemblyFile(char *filename, char *outString, SYMBOL_TABLE *table);
+extern int parseAssemblyFile(char *filename, char *outString, SYMBOL_TABLE *table);
