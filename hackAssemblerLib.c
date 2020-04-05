@@ -66,6 +66,12 @@ void stripComments(char *str, char *out) {
     }
 }
 
+void setStringToEmpty(char *str, size_t len) {
+    for (int i = 0; i < len; i++) {
+        str[i] = '\0';
+    }
+}
+
 int indexOfNextChar(char *str, char c, size_t len, int startIndex) {
     int i;
     for (i = startIndex; i < len; i++) {
@@ -111,15 +117,18 @@ int readLineIntoSymbol(char *str, SYMBOL *symbol) {
         return -1;
     }
 
-    // TODO: handle strings longer than field buffers.
-    char field1[50] = "";
-    char field2[50] = "";
+    size_t len1 = sizeof(symbol->name);
+    size_t len2 = sizeof(symbol->value);
+    char field1[len1];
+    char field2[len2];
+    setStringToEmpty(field1, len1);
+    setStringToEmpty(field2, len2);
     strncpy(field1, str, i);
     strncpy(field2, &str[i + 1], len - i - 1);
 
     // Remove whitespace.
-    char field1w[50];
-    char field2w[50];
+    char field1w[len1];
+    char field2w[len2];
     stripWhiteSpace(field1, field1w);
     stripWhiteSpace(field2, field2w);
 
@@ -132,8 +141,8 @@ int readLineIntoSymbol(char *str, SYMBOL *symbol) {
     }
 
     // Copy fields into symbol.
-    strcpy(symbol->name, field1w);
-    strcpy(symbol->value, field2w);
+    strncpy(symbol->name, field1w, len1);
+    strncpy(symbol->value, field2w, len2);
 
     return 0;
 }
@@ -200,6 +209,7 @@ int parseAssemblyFile(char *filename, char *outString, SYMBOL_TABLE *table) {
     char str[100];
     int fileSize = getFileSize(filename);
     char buffer[fileSize];
+    setStringToEmpty(buffer, fileSize);
 
     // First pass
     int line = 1;
