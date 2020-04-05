@@ -183,16 +183,29 @@ int preprocessAssemblyLine(char *str, char *out, int *line, SYMBOL_TABLE *table)
     stripComments(str, noComments);
     stripWhiteSpace(noComments, clean);
 
-    // If line is blank for newline
-        // return
+    // If line is blank or newline
+    if (clean[0] == '\0' || clean[0] == '\n') {
+        return 0;
+    }
 
-    // If contains label
-        // Add label to symbol table
-        // return
+    // If contains label, add to symbols table
+    size_t lenClean = strlen(clean);
+    if (clean[0] == '(' && clean[lenClean - 1] == ')') {
+        SYMBOL symbol;
+        strncpy(symbol.name, &clean[1], lenClean - 2);
+
+        char lineStr[10];
+        sprintf(lineStr, "%d", *line);
+        strcpy(symbol.value, lineStr);
+
+        addSymbol(table, symbol);
+
+        return 0;
+    }
 
     strcat(out, clean);
 
-    line++;
+    *line = *line + 1;
 
     return 0;
 }

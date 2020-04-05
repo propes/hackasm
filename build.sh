@@ -13,6 +13,7 @@ gcc -c -g tests/stripComments_tests.c
 gcc -c -g tests/readSymbolsFromFile_tests.c
 gcc -c -g tests/matchRegex_tests.c
 gcc -c -g tests/addSymbol_tests.c
+gcc -c -g tests/preprocessAssemblyLine_tests.c
 gcc -c -g runner.c
 gcc -c -g main.c
 
@@ -26,6 +27,7 @@ gcc -o runner \
     readSymbolsFromFile_tests.o \
     matchRegex_tests.o \
     addSymbol_tests.o \
+    preprocessAssemblyLine_tests.o \
     runner.o
 
 gcc -o hackAsm \

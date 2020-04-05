@@ -7,3 +7,4 @@ extern void stripComments(char *str, char *out);
 extern int readSymbolsFromFile(char *filename, SYMBOL_TABLE *table);
 extern int matchRegex(const char *string, char *pattern);
 extern int parseAssemblyFile(char *filename, char *outString, SYMBOL_TABLE *table);
+extern int preprocessAssemblyLine(char *str, char *out, int *line, SYMBOL_TABLE *table);

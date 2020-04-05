@@ -1,0 +1,4 @@
+int preprocessAssemblyLine_GivenString_ReturnsCorrectOutput();
+int preprocessAssemblyLine_GivenEmptyOrNewline_DoesntIncrementLineCounter();
+int preprocessAssemblyLine_GivenValidString_IncrementsLineCounter();
+int preprocessAssemblyLine_GivenLabel_AddLabelToSymbolsTable();

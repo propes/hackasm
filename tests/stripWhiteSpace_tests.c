@@ -14,6 +14,8 @@ int stripWhiteSpace_GivenValues() {
         { " aa", "aa", "stripWhiteSpace( aa)" },
         { "aa ", "aa", "stripWhiteSpace(aa )" },
         { " aa ", "aa", "stripWhiteSpace( aa )" },
+        { "\n", "\n", "stripWhiteSpace(newline)" },
+        { "   \n", "\n", "stripWhiteSpace(newline)" },
     };
 
     int failCount = 0;

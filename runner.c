@@ -5,6 +5,7 @@
 #include "tests/readSymbolsFromFile_tests.h"
 #include "tests/matchRegex_tests.h"
 #include "tests/addSymbol_tests.h"
+#include "tests/preprocessAssemblyLine_tests.h"
 
 int main() {
     int failCount =
@@ -24,7 +25,11 @@ int main() {
         readSymbolsFromFile_GivenTwoRecords_CreatesSymbols() +
         readSymbolsFromFile_GivenThreeRecords_CreatesSymbols() +
         addSymbol_GivenSymbols_UpdatesArray() +
-        addSymbol_GivenSymbol_UpdatesCount();
+        addSymbol_GivenSymbol_UpdatesCount() +
+        preprocessAssemblyLine_GivenString_ReturnsCorrectOutput() +
+        preprocessAssemblyLine_GivenEmptyOrNewline_DoesntIncrementLineCounter() +
+        preprocessAssemblyLine_GivenValidString_IncrementsLineCounter() +
+        preprocessAssemblyLine_GivenLabel_AddLabelToSymbolsTable();
 
     if (failCount == 0) {
         printf("All tested passed.\n");
