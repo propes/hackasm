@@ -28,15 +28,6 @@ size_t getFileSize(char *filename) {
     return stbuf.st_size;
 }
 
-void readFileIntoString(char *filename, char *str) {
-    FILE *fptr;
-    fptr = fopen(filename, "r");
-
-    fscanf(fptr,"%s", str);
-
-    fclose(fptr);
-}
-
 void writeStringToFile(char *filename, char *out) {
 }
 
@@ -52,13 +43,6 @@ void stripWhiteSpace(char *str, char *out) {
 }
 
 void stripComments(char *str, char *out) {
-}
-
-void convertAssemblyToMachineCode(char *str, char *out, SYMBOL_TABLE *table) {
-    // Read each character until next line break
-    // and copy each character into a buffer string.
-
-    // Parse the assembly string
 }
 
 int indexOfNextChar(char *str, char c, size_t len, int startIndex) {
@@ -160,4 +144,8 @@ int readSymbolsFromFile(char *filename, SYMBOL_TABLE *table) {
     fclose(fptr);
 
     return 0;
+}
+
+void parseAssemblyFile(char *filename, char *outString, SYMBOL_TABLE *table) {
+    
 }

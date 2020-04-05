@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "tests/fileSize_tests.h"
-#include "tests/readFileIntoString_tests.h"
 #include "tests/stripWhiteSpace_tests.h"
 #include "tests/readSymbolsFromFile_tests.h"
 #include "tests/matchRegex_tests.h"
@@ -12,8 +11,6 @@ int main() {
         fileSize_GivenOneByteFile_ReturnsOne() +
         fileSize_Given4ByteFile_Returns4() +
         fileSize_Given1024ByteFile_Returns1024() +
-        readFileIntoString_GivenEmptyFile_LeavesStringEmpty() +
-        readFileIntoString_PopulatesString() +
         matchRegex_GivenNoMatch_ReturnsFalse() +
         matchRegex_GivenMatch_ReturnsTrue() +
         stripWhiteSpace_GivenValues() +

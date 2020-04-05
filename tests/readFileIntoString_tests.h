@@ -1,2 +1,0 @@
-extern int readFileIntoString_GivenEmptyFile_LeavesStringEmpty();
-extern int readFileIntoString_PopulatesString();
